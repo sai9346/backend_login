@@ -14,10 +14,25 @@ connectDB();
 // Middleware setup
 app.use(express.json());          // To parse JSON request bodies
 app.use(cookieParser());          // To parse cookies in request headers
-app.use(cors({                    // Enable Cross-Origin Resource Sharing
-  origin: 'https://mylogin9.netlify.app',  // Replace with your frontend URL (no trailing slash)
+
+// CORS configuration
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://mylogin9.netlify.app'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true               // Allow credentials (cookies, authorization headers, etc.)
-}));
+};
+
+app.use(cors(corsOptions));
 
 // API Routes
 app.use('/api/auth', authRoutes);  // Authentication routes
