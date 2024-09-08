@@ -12,8 +12,8 @@ const app = express();
 connectDB();
 
 // Middleware setup
-app.use(express.json());          // To parse JSON request bodies
-app.use(cookieParser());          // To parse cookies in request headers
+app.use(express.json());          
+app.use(cookieParser());          
 
 // CORS configuration
 const allowedOrigins = [
@@ -29,13 +29,13 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true               // Allow credentials (cookies, authorization headers, etc.)
+  credentials: true              
 };
 
 app.use(cors(corsOptions));
 
 // API Routes
-app.use('/api/auth', authRoutes);  // Authentication routes
+app.use('/api/auth', authRoutes);  
 
 // Starting the server
 const PORT = process.env.PORT || 5000;
