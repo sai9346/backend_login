@@ -15,7 +15,7 @@ connectDB();
 app.use(express.json());          // To parse JSON request bodies
 app.use(cookieParser());          // To parse cookies in request headers
 app.use(cors({                    // Enable Cross-Origin Resource Sharing
-  origin: 'https://mylogin9.netlify.app/',  // Replace with your frontend URL (no trailing slash)
+  origin: 'https://mylogin9.netlify.app',  // Replace with your frontend URL (no trailing slash)
   credentials: true               // Allow credentials (cookies, authorization headers, etc.)
 }));
 
