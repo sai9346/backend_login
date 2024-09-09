@@ -55,14 +55,15 @@ exports.login = async (req, res) => {
 // Refresh Token
 exports.refreshToken = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
-  if (!refreshToken) return res.status(403).json({ msg: 'Access denied' });
-
+  if (!refreshToken) {
+    return res.status(403).json({ msg: 'Access denied, no refresh token provided' });
+  }
   try {
     const user = await User.findOne({ refreshToken });
-    if (!user) return res.status(403).json({ msg: 'Access denied' });
+    if (!user) return res.status(403).json({ msg: 'Access denied,  invalid refresh token' });
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-      if (err) return res.status(403).json({ msg: 'Access denied' });
+      if (err) return res.status(403).json({ msg: 'Invalid refresh token' });
 
       const accessToken = generateAccessToken(user);
       res.status(200).json({ accessToken });
