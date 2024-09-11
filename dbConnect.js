@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const dbConnect = () => {
 	const connectionParams = { useNewUrlParser: true };
-	mongoose.connect(process.env.DB, connectionParams);
+	mongoose.connect(process.env.MONGO_URI, connectionParams);
 
 	mongoose.connection.on("connected", () => {
 		console.log("Connected to database sucessfully");
