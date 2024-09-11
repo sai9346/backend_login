@@ -8,4 +8,4 @@ router.get("/details", auth, (req, res) => {
   res.status(200).json({ message: "User authenticated." });
 });
 
-export default router;
+export default router

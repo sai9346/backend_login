@@ -8,7 +8,9 @@ import userRoutes from "./routes/users.js";
 
 const app = express();
 
+
 dotenv.config();
+
 dbConnect();
 
 
@@ -16,6 +18,7 @@ const allowedOrigins = [
   'http://localhost:3000',  
   'https://mylogin9.netlify.app',  
 ];
+
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -26,13 +29,13 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  
   allowedHeaders: ['Content-Type', 'Authorization'],  
-  credentials: true, 
+  credentials: true,  
 };
 
-app.use(cors(corsOptions));
 
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -40,7 +43,6 @@ app.use(express.json());
 app.use("/api", authRoutes);
 app.use("/api/refreshToken", refreshTokenRoutes);
 app.use("/api/users", userRoutes);
-
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
