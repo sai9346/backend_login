@@ -11,25 +11,37 @@ const app = express();
 dotenv.config();
 dbConnect();
 
-// CORS configuration
+
+const allowedOrigins = [
+  'http://localhost:3000',  
+  'https://mylogin9.netlify.app',  
+];
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'https://mylogin9.netlify.app',  // Frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
-  credentials: true,  // Allow credentials (e.g., cookies, authorization headers)
+  origin: function (origin, callback) {
+   
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'],  
+  credentials: true, 
 };
 
 app.use(cors(corsOptions));
 
-// Parse incoming JSON requests
+
 app.use(express.json());
 
-// API routes
+
 app.use("/api", authRoutes);
 app.use("/api/refreshToken", refreshTokenRoutes);
 app.use("/api/users", userRoutes);
 
-// Set up the server to listen on the specified port
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}...`);
