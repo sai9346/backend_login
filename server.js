@@ -13,7 +13,7 @@ dbConnect();
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Frontend URL
+  origin: process.env.FRONTEND_URL || 'https://mylogin9.netlify.app',  // Frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
   credentials: true,  // Allow credentials (e.g., cookies, authorization headers)
