@@ -1,44 +1,36 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-require('dotenv').config();
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import dbConnect from "./dbConnect.js";
+import authRoutes from "./routes/auth.js";
+import refreshTokenRoutes from "./routes/refreshToken.js";
+import userRoutes from "./routes/users.js";
 
-// Initialize the app
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
-// Middleware setup
-app.use(express.json());          
-app.use(cookieParser());          
+dotenv.config();
+dbConnect();
 
 // CORS configuration
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://mylogin9.netlify.app'
-];
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true              
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
+  credentials: true,  // Allow credentials (e.g., cookies, authorization headers)
 };
 
 app.use(cors(corsOptions));
 
-// API Routes
-app.use('/api/auth', authRoutes);  
+// Parse incoming JSON requests
+app.use(express.json());
 
-// Starting the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// API routes
+app.use("/api", authRoutes);
+app.use("/api/refreshToken", refreshTokenRoutes);
+app.use("/api/users", userRoutes);
+
+// Set up the server to listen on the specified port
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}...`);
 });
